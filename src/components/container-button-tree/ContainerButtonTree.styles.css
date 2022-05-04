@@ -1,0 +1,6 @@
+.container-button-tree {
+    border-top: 1px solid #000;
+    padding: 7px;
+    display: flex;
+    justify-content: flex-end;
+}

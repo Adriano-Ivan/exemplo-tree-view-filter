@@ -1,0 +1,25 @@
+.container-tree-entity {
+    width: 50%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+}
+
+.individual-tree-entity {
+    width:70%;
+    padding-bottom:10px;
+    padding-top:20px;
+
+}
+
+.title-entity {
+    box-sizing: border-box;
+    display:flex;
+    justify-content:flex-start;
+    width:100%;
+    padding: 0;
+    padding-left: 10px;
+  
+    border-bottom:1px solid #000;
+}

@@ -1,0 +1,8 @@
+.checkbox-item-tree {
+    padding:5px;
+}
+
+.chevron-and-checkbox-tree-item{
+    display:flex;
+    align-items: center;
+}
