@@ -1,5 +1,21 @@
+.container-tree {
+    border: 1px solid #000;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 5%;
+}
+
+.container-tree-entities {
+    display: flex;
+   
+}
+
+.container-tree-entities .container-tree-entity:first-child {
+    border-right: 1px solid #000;
+}
+
 .container-tree-entity {
-    width: 50%;
+    width: 60%;
     display:flex;
     flex-direction:column;
     justify-content:flex-start;
