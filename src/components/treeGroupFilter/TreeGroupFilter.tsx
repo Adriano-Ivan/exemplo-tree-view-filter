@@ -2,9 +2,9 @@ import { Checkbox, sequencesToID } from "@fluentui/react";
 import { Dispatch, Fragment, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { CaretRightSolid8Icon} from '@fluentui/react-icons-mdl2';
 import { CaretDownSolid8Icon } from "@fluentui/react-icons-mdl2";
-import './TreeGroup.styles.css'
+import './TreeGroupFilter.styles.css'
 
-interface TreeGroupProps {
+interface TreeGroupFilterProps {
     internElements: any[],
     itemSiblingsIds?:any[],
     label: string,
@@ -16,25 +16,28 @@ interface TreeGroupProps {
     handleStateAuxiliarChecked : () => void,
 }
 
-const TreeGroup = ({internElements,label,id,openedGroup,idParent,
+const TreeGroupFilter = ({internElements,label,id,openedGroup,idParent,
     selectedItems,auxSequenceChainSelected,handleStateAuxiliarChecked,
-     itemSiblingsIds}: TreeGroupProps) => {
+     itemSiblingsIds}: TreeGroupFilterProps) => {
 
-    // const [groupIsChecked, setGroupIsChecked] = useState(checkedGroup);
     const [groupIsOpen, setGroupIsOpen] = useState<boolean>(openedGroup);
     const [auxiliarCheckedState, setAuxiliarCheckedState] = useState<boolean>(false);
     const [childrenOfGroup, setChildrenOfGroup] = useState<any[]>([]);
     const [fatherComponentId, setFatherComponentId] = useState<string>('');
     const sequenceChainSelectedAux = useRef<any[]>();
-
+    
    
     useEffect(()=>{
-       
-        if(idParent !== undefined)
+
+        console.log(`ID ITEM: ${id}, ID PARENT: ${idParent}`);
+        console.log('LABEL: ',label);
+
+        if(idParent !== undefined){
             setFatherComponentId(`${idParent}`);
-        
+        }
        
     },[]);
+
 
     useEffect(()=>{
         const newChildrenOfGroup = filterInternElementsAndReturn(internElements,[]);
@@ -84,15 +87,19 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
     const addSelectedItem = (id:string, childrenList: any[] = []) => {
         if(!elementExistsInGroup(id)){
 
-            if(!childrenList.includes(id) && !selectedItems.current.includes(id)){
-                selectedItems.current=[...selectedItems.current, id, ...childrenList];
+            if( !selectedItems.current.includes(id)){
+                if(!childrenList.includes(id))
+                    selectedItems.current=[...selectedItems.current, id, ...childrenList];
             }
+
 
             if(childrenList.length === 0){
                
                 if(!selectedItems.current.includes(id)){
                     selectedItems.current=[...selectedItems.current, id];
+                    
                 }
+
              
             }
             
@@ -105,29 +112,28 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
 
                             selectedItems.current=[...selectedItems.current,
                                 sequenceChainSelectedAux.current[i] ];
-                               
                         }
+
+
                     }
                     
             }
-            
         }
-        console.log('sequence chain add item: ',sequenceChainSelectedAux.current);
-        console.log('selected items add item: ',selectedItems.current);
     }
 
     const markOffSelectedItem = (index:any, childrenList:any[], itemId:string) => {
         if(index >= 0){
-            selectedItems.current = [...selectedItems
-                                    .current
-                                    .filter((item) => {
-                                            if(item !== selectedItems.current[index]
-                                                && !childrenList.includes(item)){
-                                                    return item;
-                                            }
-                                        }
-                                    )
-                                ];
+            const filteredByIndexAndChildren = (elements:any) =>elements
+            .current
+            .filter((item:any) => {
+                    if(item !== selectedItems.current[index]
+                        && !childrenList.includes(item)){
+                            return item;
+                    }
+                }
+            );
+            
+            selectedItems.current = [...filteredByIndexAndChildren(selectedItems)];
 
 
             let includesSomething = true;
@@ -135,39 +141,28 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
 
             itemSiblingsIds?.forEach((itemSiblingId)=> {
                 if(selectedItems.current.includes(itemSiblingId)){
+                    console.log(qtde )
                     qtde += 1;
                 }
             });
 
             includesSomething = qtde > 0;
 
-            console.log('SEQUENCE : ',sequenceChainSelectedAux)
-            if(!includesSomething && !itemId.includes("item")){
-                console.log(selectedItems.current)
-                selectedItems.current = [...selectedItems
-                                            .current        
-                                            .filter((item,i) => {
-                                               
-                                                if(item !== fatherComponentId){
-                                                    return item;
-                                                }
-                                            })];
-            } else if(!includesSomething && sequenceChainSelectedAux.current?.length === 1){
-                selectedItems.current = [...selectedItems
-                    .current        
-                    .filter((item,i) => {
-                      
-                        if(item !== sequenceChainSelectedAux.current?.[0]){
-                            return item;
-                        } 
-                            
-                    })];
+            if(!includesSomething ){
+                const filteredByFatherComponentId = (elements:any) => elements
+                .current        
+                .filter((item:any,i:number) => {
+                    console.log('ID FATHER: ',fatherComponentId)
+                    if(item !== fatherComponentId  
+                          ){
+
+                        return item;
+                    }
+                });
+
+                selectedItems.current = [...filteredByFatherComponentId(selectedItems)];
+               
             }
-            
-            console.log(itemId);
-            console.log('children of group: ',childrenOfGroup)
-            console.log('sequence chain mark off: ',sequenceChainSelectedAux.current);
-            console.log('selected items mark off: ',selectedItems.current);
         }
     }
 
@@ -206,13 +201,6 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
     }
 
     const toggleGroupIsChecked = (value:any) => {
-
-        if(handleStateAuxiliarChecked === undefined)
-        {
-            handleAuxiliarCheckedState();
-        } else {
-            handleStateAuxiliarChecked();
-        }
         
         
         if(value.target.id.includes("item") || idParent !== undefined){
@@ -234,6 +222,12 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
             markOffSelectedItem(indexN,[...childrenOfGroup],value.target.id);
         }
 
+        if(handleStateAuxiliarChecked === undefined)
+        {
+            handleAuxiliarCheckedState();
+        } else {
+            handleStateAuxiliarChecked();
+        }
     }
 
     return (
@@ -275,10 +269,9 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
                          <Fragment>
                         {
                             groupIsOpen &&
-                            <TreeGroup 
+                            <TreeGroupFilter
                                 idParent={id}
                                 id={internItem.id}
-                                // checkedGroup={groupIsChecked}
                                 itemSiblingsIds={childrenOfGroup}
                                 handleStateAuxiliarChecked={handleAuxiliarCheckedState}
                                 selectedItems={selectedItems}
@@ -299,4 +292,4 @@ const TreeGroup = ({internElements,label,id,openedGroup,idParent,
     )
 }
 
-export default TreeGroup;
+export default TreeGroupFilter;

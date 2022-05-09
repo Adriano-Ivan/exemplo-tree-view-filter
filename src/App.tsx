@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import TreeView from './components/treeview/TreeView';
+import TreeViewFilter from './components/treeViewFilter/TreeViewFilter';
 import { initializeIcons } from '@fluentui/react/lib/Icons';
 
 initializeIcons();
@@ -108,11 +108,13 @@ function App() {
 
   const selectedItems = useRef<any[]>([]);
   console.log('APP COMPONENT');
+
+
   // O app inicializa com o container de árvores, recebendo os dados, título do container e texto do botão de filtrar
   return (
     <div className="App">
       
-      <TreeView
+      <TreeViewFilter
         selectedItems={selectedItems}
          treeData={dataTree} 
          titleContainer={"Filtro de entidades"} 

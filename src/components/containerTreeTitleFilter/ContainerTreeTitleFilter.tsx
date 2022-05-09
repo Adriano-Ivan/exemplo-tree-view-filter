@@ -1,16 +1,16 @@
 import React from "react";
-import './ContainerTreeTitle.styles.css';
+import './ContainerTreeTitleFilter.styles.css';
 
-interface ContainerTreeTitleProps {
+interface ContainerTreeTitleFilterProps {
     titleTree: string,
 }
 
 /* O container de título pode servir para encapsular as regras do título
 do container, como o próprio texto, possíveis componentes filhos e estilos */
-const ContainerTreeTitle = ({titleTree}: ContainerTreeTitleProps) => {
+const ContainerTreeTitleFilter = ({titleTree}: ContainerTreeTitleFilterProps) => {
     return (
         <h2 className="container-tree-title">{titleTree}</h2>
     );
 }
 
-export default ContainerTreeTitle;
+export default ContainerTreeTitleFilter;

@@ -1,15 +1,15 @@
 import React from "react";
 import { PrimaryButton } from "@fluentui/react";
 
-interface ButtonTreeProps {
+interface ButtonTreeFilterProps {
     textButton: string
 }
 
 /* Retorna o componente de botão do fluentUI */
-const ButtonTree = ({textButton}: ButtonTreeProps) =>{
+const ButtonTreeFilter = ({textButton}: ButtonTreeFilterProps) =>{
     return (
         <PrimaryButton text={textButton}/>
     );
 }
 
-export default ButtonTree;
+export default ButtonTreeFilter;

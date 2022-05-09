@@ -1,10 +1,10 @@
 import React, { MutableRefObject, useState } from "react";
-import TreeGroup from "../tree-group/TreeGroup";
-import ContainerTreeTitle from "../container-tree-title/ContainerTreeTitle";
-import ContainerButtonTree from "../container-button-tree/ContainerButtonTree";
-import './TreeView.styles.css';
+import TreeGroupFilter from "../treeGroupFilter/TreeGroupFilter";
+import ContainerTreeTitleFilter from "../containerTreeTitleFilter/ContainerTreeTitleFilter";
+import ContainerButtonTreeFilter from "../containerButtonTreeFilter/ContainerButtonTreeFilter";
+import './TreeViewFilter.styles.css';
 
-interface TreeViewProps {
+interface TreeViewFilterProps {
     treeData: any[],
     titleContainer:string,
     textButtonTree: string,
@@ -13,12 +13,12 @@ interface TreeViewProps {
 
 /* A TreeView é a base para a renderização dos dados, pois recebe
 todos os dados e solta o gatilho para a renderização recursiva */
-const TreeView = ({treeData, titleContainer,textButtonTree,selectedItems}:TreeViewProps) =>{
+const TreeViewFilter = ({treeData, titleContainer,textButtonTree,selectedItems}:TreeViewFilterProps) =>{
        
     console.log('TREE VIEW')
     return (
         <section className="container-tree">
-            <ContainerTreeTitle titleTree={titleContainer}/>
+            <ContainerTreeTitleFilter titleTree={titleContainer}/>
 
             <div className="container-tree-entities">
                 {
@@ -32,7 +32,7 @@ const TreeView = ({treeData, titleContainer,textButtonTree,selectedItems}:TreeVi
                                       {
                                         entityData.entityRecords.map((entityRecord:any)=>{
                                             return(
-                                                <TreeGroup 
+                                                <TreeGroupFilter
                                                     selectedItems={selectedItems}
                                                     key={entityRecord.id} 
                                                     treeItemIsChecked={false} 
@@ -51,9 +51,9 @@ const TreeView = ({treeData, titleContainer,textButtonTree,selectedItems}:TreeVi
                 }
             </div>
 
-            <ContainerButtonTree textButtonTree={textButtonTree}/>
+            <ContainerButtonTreeFilter textButtonTree={textButtonTree}/>
         </section> 
     )
 }
 
-export default TreeView;
+export default TreeViewFilter;
